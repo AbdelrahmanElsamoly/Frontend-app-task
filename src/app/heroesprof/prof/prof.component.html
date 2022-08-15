@@ -1,0 +1,187 @@
+<!-- spinner display -->
+<section class="container d-flex justify-content-center" *ngIf="!isloaded">
+  <img src="assets\spinner.gif" class="w-25" alt="" />
+</section>
+
+<!-- hero profile display -->
+<section *ngFor="let property of heroDetails" style="z-index: -1">
+  <!-- button add -->
+  <button
+    class="custom-btn btn-3"
+    data-bs-toggle="modal"
+    data-bs-target="#exampleModal"
+    data-bs-whatever="@mdo"
+  >
+    <span>Update</span>
+  </button>
+  <!-- profile of hero -->
+  <div class="d-flex flex-column justify-between align-items-center w-100 my-3">
+    <img src="assets\empolyee2.png" class="w-25" alt="" />
+    <ngb-rating
+      [max]="5"
+      [(rate)]="property.rate"
+      [readonly]="true"
+      style="color: rgb(210, 105, 30); font-size: 30px"
+    ></ngb-rating>
+    <h2>{{ property.name }}</h2>
+  </div>
+  <div class="d-flex my-2 w-50 flex-column justify-content-evenly">
+    <p style="font-weight: bold">Description:</p>
+    <p class="ms-5">{{ property.description }}.</p>
+  </div>
+  <div class="d-flex w-50 flex-column justify-content-evenly">
+    <p style="font-weight: bold">Powers:</p>
+    <p class="ms-5">{{ property.powers }}.</p>
+  </div>
+</section>
+
+<!-- add hero button -->
+
+<!-- modal of add hero -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content" style="border-radius: 10px !important">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold" id="exampleModalLabel">
+          Hero Information
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="updatedHero" (ngSubmit)="upDate()">
+          <!-- name of hero -->
+          <div class="mb-3 form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="floatingInputGroup1"
+              formControlName="name"
+              placeholder="Username"
+            />
+            <label for="floatingInputGroup1" class="col-form-label"
+              >Hero Name:</label
+            >
+            <div
+              *ngIf="
+                updatedHero.get('name')?.errors != null &&
+                updatedHero.get('name')?.touched
+              "
+              class="alert alert-danger py-0"
+            >
+              <p *ngIf="updatedHero.get('name')?.errors?.required">
+                Name is required
+              </p>
+            </div>
+          </div>
+
+          <!-- power of hero -->
+          <div class="mb-3 form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="floatingInputGroup2"
+              formControlName="powers"
+              placeholder="Username"
+            />
+            <label for="floatingInputGroup2" class="col-form-label"
+              >Power:</label
+            >
+            <div
+              *ngIf="
+                updatedHero.get('powers')?.errors != null &&
+                updatedHero.get('powers')?.touched
+              "
+              class="alert alert-danger py-0"
+            >
+              <p *ngIf="updatedHero.get('powers')?.errors?.required">
+                Powers is required
+              </p>
+            </div>
+          </div>
+
+          <!-- Description of hero -->
+          <div class="mb-3 form-floating">
+            <textarea
+              class="form-control"
+              placeholder="Leave a comment here"
+              id="floatingTextarea2"
+              style="height: 100px"
+              formControlName="description"
+            ></textarea>
+            <label for="floatingTextarea2">Discription:</label>
+            <div
+              *ngIf="
+                updatedHero.get('description')?.errors != null &&
+                updatedHero.get('description')?.touched
+              "
+              class="alert alert-danger py-0"
+            >
+              <p *ngIf="updatedHero.get('description')?.errors?.required">
+                Description is required
+              </p>
+            </div>
+          </div>
+
+          <!-- Rate and image of hero -->
+
+          <div class="w-100 d-flex justify-content-between align-baseline mb-4">
+            <div class="w-25">
+              <label for="Rate" class="col-form-label fw-bold">Rate:</label>
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                id="Rate"
+                formControlName="rate"
+              >
+                <option value="1" selected>1</option>
+                <option *ngFor="let range of powerRange">{{ range }}</option>
+              </select>
+              <div
+                *ngIf="
+                  updatedHero.get('rate')?.errors != null &&
+                  updatedHero.get('rate')?.touched
+                "
+                class="alert alert-danger py-0"
+              >
+                <p *ngIf="updatedHero.get('rate')?.errors?.required">
+                  Rate is required
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- submitted and close modal -->
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-danger"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-info"
+              data-bs-dismiss="modal"
+              [disabled]="updatedHero.invalid"
+              type="submit"
+            >
+              Update Hero
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

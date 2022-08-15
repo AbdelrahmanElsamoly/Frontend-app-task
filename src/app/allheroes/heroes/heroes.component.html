@@ -1,0 +1,102 @@
+<!-- spinner display -->
+<section class="container d-flex justify-content-center" *ngIf="!isloaded">
+  <img src="assets\spinner.gif" class="w-25" alt="" />
+</section>
+
+<!-- allHeroes Display -->
+<section class="row" style="z-index: -1" *ngIf="isloaded">
+  <app-shared></app-shared>
+  <div class="search-container col-md-4 my-4 col-12 px-0">
+    <!-- filter section -->
+    <nav class="navbar bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand text-dark"> Filter </a>
+        <!-- drop down filter -->
+        <div class="btn-group">
+          <button
+            type="button"
+            class="btn"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <i class="bi bi-filter"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <button class="dropdown-item" type="button" (click)="sortName()">
+                Sort By Name
+              </button>
+            </li>
+            <li>
+              <button class="dropdown-item" type="button" (click)="sortBower()">
+                Sort By Power
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- search part -->
+    <div class="input-icons m-5 form-floating">
+      <i class="bi bi-search icon"></i>
+      <input
+        class="input-field form-control"
+        placeholder="Search"
+        type="search"
+        [(ngModel)]="name"
+        id="floatingInputGroup1"
+      />
+      <label for="floatingInputGroup1" class="mx-4">Username</label>
+    </div>
+
+    <!-- sortby Power -->
+    <div class="form-check form-switch my-5">
+      <label class="form-check-label px-3" for="flexSwitchCheckChecked"
+        >Sorted By Power</label
+      >
+      <input
+        class="form-check-input ms-5"
+        type="checkbox"
+        role="switch"
+        id="flexSwitchCheckChecked"
+        (change)="changeBoolean()"
+      />
+    </div>
+  </div>
+
+  <!-- table section -->
+  <div class="col-md-8 col-12">
+    <table class="table table-sm">
+      <thead>
+        <tr>
+          <th scope="col">Hero Name</th>
+          <th scope="col">Powers</th>
+          <th scope="col">Rate</th>
+          <th scope="col">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let hero of allHeroes | filter: name">
+          <td>
+            <a routerLink="/hero/{{ hero.id }}" style="text-decoration: none">{{
+              hero.name | uppercase
+            }}</a>
+          </td>
+          <td>{{ hero.powers }}</td>
+          <td>
+            <ngb-rating
+              [max]="5"
+              [(rate)]="hero.rate"
+              [readonly]="true"
+              style="color: #d4af37; font-weight: bold"
+            ></ngb-rating>
+          </td>
+          <td>
+            <i class="bi bi-trash" (click)="delHero(hero)"></i>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
